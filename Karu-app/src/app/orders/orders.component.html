@@ -1,0 +1,12 @@
+<h2>Compras</h2>
+<ul class="orders">
+  <li *ngFor="let order of orders">
+    <div>RFID <span class="badge">{{order.cardId}}</span></div>
+	<div>Precio <span>{{order.orderPrice}}</span></div>
+	<ul>
+		<li *ngFor="let item of order.items">
+		<div>item <span class="badge">{{item.ingredient}}</span></div>
+		</li>
+	</ul>
+  </li>
+</ul>
