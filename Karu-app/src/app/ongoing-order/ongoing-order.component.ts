@@ -82,13 +82,13 @@ export class OngoingOrderComponent implements OnInit {
 	  this.purchasePrice = 0;
   }
   
-  // Mensajito de que la compra fue agregada jeje
+  // Falta Mensajito de que la compra fue agregada jeje
   addPurchase(): void {
 	  
 	if( !this.ongoingOrders[0]) { return;}  
 	let purchase: Purchase = { orders : this.ongoingOrders};
 	this.purchaseService.addPurchase(purchase)
-		.subscribe( => this.ongoingOrders = [] )
+		.subscribe( this.ongoingOrders = [] );
 	this.purchasePrice = 0;
   }  
   constructor(private orderService: OrderService, private purchaseService: PurchaseService) { }
