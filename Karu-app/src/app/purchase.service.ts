@@ -38,7 +38,7 @@ export class PurchaseService {
 	  };
 	}
 	
-  addPurchase(purchase: Purchase): void {
+  addPurchase(purchase: Purchase): Observable<Purchase> {
 	  return this.http.post<Purchase>(this.purchaseUrl, purchase, httpOptions).pipe(
 		catchError(this.handleError<Purchase>('addPurchase'))
 	  );

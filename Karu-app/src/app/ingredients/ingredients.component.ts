@@ -47,8 +47,8 @@ export class IngredientsComponent implements OnInit {
 		  //this.ingredientsService.deleteIngredientMongo(ingredient)
           //.subscribe();
 		  
-		  this.ingredientsService.deleteIngredient(ingredient)
-          .subscribe();
+		  //this.ingredientsService.deleteIngredient(ingredient)
+          //.subscribe();
 		  
 		  
 	  }
