@@ -87,6 +87,8 @@ export class OngoingOrderComponent implements OnInit {
 	  
 	if( !this.ongoingOrders[0]) { return;}  
 	let purchase: Purchase = { orders : this.ongoingOrders};
+	//this.purchaseService.addPurchase(purchase)
+	//	.subscribe( this.ongoingOrders = [] );
 	this.purchaseService.addPurchase(purchase);
 	this.ongoingOrders = [];
 	this.purchasePrice = 0;

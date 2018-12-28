@@ -18,7 +18,8 @@ const httpOptions = {
 })
 export class PurchaseService {
 
-  private purchaseUrl = 'http://localhost:9090/http://127.0.0.1:8000/purchase/';
+  //private purchaseUrl = 'http://localhost:9090/http://127.0.0.1:8000/purchase/';
+  private purchaseUrl = 'http://192.168.0.200:9090/http://192.168.0.200:8000/purchase/';
   
   
   private log(message: string) {	

@@ -31,7 +31,8 @@ const httpOptions = {
 export class IngredientsService {
 
   private ingredientsUrl = 'http://localhost:9090/http://127.0.0.1:8000/ingredient/';
-  private mongoIngredientsUrl = 'http://localhost:9090/http://127.0.0.1:8000/ingredient/';/** modificar por ip de la mongo **/
+  //private ingredientsUrl = 'http://192.168.0.200:9090/http://192.168.0.200:8000/ingredient/'
+  private mongoIngredientsUrl = 'http://192.168.0.210:80/';/** modificar por ip de la mongo **/
 
   private log(message: string) {	
   }
@@ -86,7 +87,12 @@ export class IngredientsService {
 	  );
   }
   
+  deleteIngredient(ingredient: Ingredient): Observable<Ingredient> {
 
+	  return this.http.post<Ingredient>(this.mongoIngredientsUrl, ingredient, httpOptions).pipe(
+		catchError(this.handleError<Ingredient>('addIngredient'))
+	  );
+  }
   
   
 

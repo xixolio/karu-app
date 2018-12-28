@@ -29,11 +29,11 @@ export class IngredientsComponent implements OnInit {
 	  
 	  /**  Estas 2 líneas hay que descomentarlas para enviar los datos del nuevo ingrediente
 	       a la mongo!**/
-	  //this.ingredientsService.addIngredientMongo(ingredient)
-      //.subscribe();
+	  this.ingredientsService.addIngredientMongo(ingredient)
+      .subscribe();
 	  
-	  this.ingredientsService.addIngredient(ingredient)
-      .subscribe(ingredient => this.ingredients.push(ingredient));
+	  //this.ingredientsService.addIngredient(ingredient)
+      //.subscribe(ingredient => this.ingredients.push(ingredient));
 	  
   }
   
@@ -47,8 +47,8 @@ export class IngredientsComponent implements OnInit {
 		  //this.ingredientsService.deleteIngredientMongo(ingredient)
           //.subscribe();
 		  
-		  //this.ingredientsService.deleteIngredient(ingredient)
-          //.subscribe();
+		  this.ingredientsService.deleteIngredient(ingredient)
+          .subscribe();
 		  
 		  
 	  }

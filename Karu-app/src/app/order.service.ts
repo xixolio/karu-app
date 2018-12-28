@@ -37,10 +37,11 @@ const httpOptions = {
 export class OrderService {
 
 
-  private ordersDBUrl = 'http://localhost:9090/http://127.0.0.1:8000/order/';
+  //private ordersDBUrl = 'http://localhost:9090/http://127.0.0.1:8000/order/';
+  private ordersDBUrl = 'http://192.168.0.200:9090/http://192.168.0.200:8000/order/';
   
   /** Esta URL se debe modificar por la de la Mongo DB**/
-  private ordersMongoDB = 'http://localhost:9090/http://127.0.0.1:8000/order/3/';
+  private ordersMongoDB = 'http://192.168.0.200:9090/http://192.168.0.200:8000/order/3/';
   
   private log(message: string) {	
   }
