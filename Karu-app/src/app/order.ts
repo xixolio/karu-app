@@ -4,5 +4,6 @@ export class Order {
   id: number;
   orderPrice?: number;
   items: Item[];
-  cardId: number;
+  rfID: number;
+  ongoing: boolean;
 }

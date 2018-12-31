@@ -4,6 +4,7 @@ import { Item } from './item';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { GlobalVariable } from './global';
 
 const httpOptions = {
 	headers: new HttpHeaders({ 'Content-Type': 'application/json',
@@ -38,10 +39,14 @@ export class OrderService {
 
 
   //private ordersDBUrl = 'http://localhost:9090/http://127.0.0.1:8000/order/';
-  private ordersDBUrl = 'http://192.168.0.200:9090/http://192.168.0.200:8000/order/';
+  //private ordersDBUrl = 'http://192.168.0.200:9090/http://192.168.0.200:8000/order/';
   
   /** Esta URL se debe modificar por la de la Mongo DB**/
-  private ordersMongoDB = 'http://192.168.0.200:9090/http://192.168.0.200:8000/order/3/';
+  //private ordersMongoDB = 'http://192.168.0.200:9090/http://192.168.0.200:8000/order/3/';
+  //private ordersMongoDB = 'http://localhost:9090/http://127.0.0.1:8000/order/3/';
+  
+  private backendUrl = GlobalVariable.BASE_API_URL + 'order/';
+  private middleUrl = GlobalVariable.MIDDLE_API_URL + 'order/';
   
   private log(message: string) {	
   }
@@ -61,22 +66,36 @@ export class OrderService {
 	}
 
 /** No se usa por ahora **/
-  getOrders(): Observable<Order[]> {
+  getOrders(db: string): Observable<Order[]> {
 	  
-	  return this.http.get<Order[]>(this.ordersDBUrl,httpOptions)
+	  var url;
+	  if( db == 'B' ){url = this.backendUrl}
+	  if( db == 'M' ){url = this.middleUrl}  
+	  
+	  return this.http.get<Order[]>(url,httpOptions)
 	  	.pipe(
 	  		catchError(this.handleError('getOrders', []))
 		);
   }	
   
-  /** El GET que se realiza a la mongo. Debe retornar un SOLO elemento, no una lista **/
+
   getOngoingOrder(): Observable<Order> {
 	  
-	  return this.http.get<Order>(this.ordersMongoDB,httpOptions)
+	  return this.http.get<Order>(this.backendUrl,httpOptions)
 	  	.pipe(
 	  		catchError(this.handleError<Order>('getOngoingOrder'))
 		);
   }	
+  
+  deleteOrder(order: Order): Observable<Order> {
+	  
+	  const url_id = `${this.middleUrl}${order.id}/`;
+	  
+	  return this.http.delete<Order>(url_id, httpOptions).pipe(
+		catchError(this.handleError<Order>('deleteOrder'))
+	  );
+  }
+  
   
   
   

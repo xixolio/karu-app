@@ -8,6 +8,7 @@ import { AppRoutingModule } from './/app-routing.module';
 import { ItemsComponent } from './items/items.component';
 import { OrdersComponent } from './orders/orders.component';
 import { OngoingOrderComponent } from './ongoing-order/ongoing-order.component';
+import { MessagesComponent } from './messages/messages.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { OngoingOrderComponent } from './ongoing-order/ongoing-order.component';
     IngredientsComponent,
     ItemsComponent,
     OrdersComponent,
-    OngoingOrderComponent
+    OngoingOrderComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,

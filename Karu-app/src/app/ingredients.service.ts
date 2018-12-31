@@ -3,6 +3,7 @@ import { Ingredient } from './ingredient';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { GlobalVariable } from './global';
 
 const httpOptions = {
 	headers: new HttpHeaders({ 'Content-Type': 'application/json',
@@ -30,9 +31,12 @@ const httpOptions = {
 
 export class IngredientsService {
 
-  private ingredientsUrl = 'http://localhost:9090/http://127.0.0.1:8000/ingredient/';
+
+  //private ingredientsUrl = 'http://localhost:9090/http://127.0.0.1:8000/ingredient/';
   //private ingredientsUrl = 'http://192.168.0.200:9090/http://192.168.0.200:8000/ingredient/'
-  private mongoIngredientsUrl = 'http://192.168.0.210:80/';/** modificar por ip de la mongo **/
+  //private mongoIngredientsUrl = 'http://192.168.0.210:80/';/** modificar por ip de la mongo **/
+  private backendUrl = GlobalVariable.BASE_API_URL + 'ingredient/';
+  private middleUrl = GlobalVariable.MIDDLE_API_URL + 'ingredient/';
 
   private log(message: string) {	
   }
@@ -51,41 +55,65 @@ export class IngredientsService {
 	  };
 	}
 	
-  /** Consulta GET para obtener todos los ingredientes desde la DB principal **/
-  getIngredients(): Observable<Ingredient[]> {
+  /** Consulta GET para obtener ingredientes **/
+  getIngredients(db: string): Observable<Ingredient[]> {
 	  
-	  return this.http.get<Ingredient[]>(this.ingredientsUrl,httpOptions)
+	  var url;
+	  if( db == 'B' ){url = this.backendUrl}
+	  if( db == 'M' ){url = this.middleUrl}  
+	  
+	  return this.http.get<Ingredient[]>(url,httpOptions)
 	  	.pipe(
 	  		catchError(this.handleError('getIngredients', []))
 		);
   }	
   
+  getIngredient(ingredient: Ingredient, db: string): Observable<Ingredient> {
+	  
+	  var url;
+	  if( db == 'B' ){url = this.backendUrl}
+	  if( db == 'M' ){url = this.middleUrl}  
+	  
+	  const url_id = `${url}${ingredient.id}/`;
+	  return this.http.get<Ingredient>(url_id,httpOptions)
+	  	.pipe(
+	  		catchError(this.handleError<Ingredient>('getIngredient'))
+		);
+  }	
+  
   /** Consulta PUT para modificar el precio y la pesa del ingrediente en ambas bases de datos */
-  updateIngredient (ingredient: Ingredient): Observable<any> {
+  updateIngredient (ingredient: Ingredient, db: string): Observable<Ingredient> {
 	
-	const url = `${this.ingredientsUrl}${ingredient.id}/`;
-	return this.http.put(url, ingredient, httpOptions).pipe(
+	var url;
+	if( db == 'B' ){url = this.backendUrl}
+	if( db == 'M' ){url = this.middleUrl}
+	  
+	const url_id = `${url}${ingredient.id}/`;
+	return this.http.put<Ingredient>(url_id, ingredient, httpOptions).pipe(
 		tap(_ => this.log(`updated ingredient id=${ingredient.id}`)),
-		catchError(this.handleError<any>('updateIngredient'))
+		catchError(this.handleError<Ingredient>('updateIngredient'))
   );
   }
   
-  /** Consulta POST para agregar ingrediente en la DB principal**/
-  addIngredient(ingredient: Ingredient): Observable<Ingredient> {
-
-	  return this.http.post<Ingredient>(this.ingredientsUrl, ingredient, httpOptions).pipe(
+  /** Consulta POST para agregar ingredientes**/
+  addIngredient(ingredient: Ingredient, db: string): Observable<Ingredient> {
+	  var url;
+	  if( db == 'B' ){url = this.backendUrl}
+	  if( db == 'M' ){url = this.middleUrl}
+	  console.log(ingredient.id);
+	  return this.http.post<Ingredient>(url, ingredient, httpOptions).pipe(
 		catchError(this.handleError<Ingredient>('addIngredient'))
 	  );
   }
-  /** Consulta POST para agregar ingrediente en la Mongo**/
-  /** Eliminar httpOptions si no es necesaria la información de usuario o construir un
-	  httpOptions2 en caso de necesitarse otro nombre de usuario y contraseña **/
-  addIngredientMongo(ingredient: Ingredient): Observable<Ingredient> {
+  // /** Consulta POST para agregar ingrediente en la Mongo**/
+  // /** Eliminar httpOptions si no es necesaria la información de usuario o construir un
+	  // httpOptions2 en caso de necesitarse otro nombre de usuario y contraseña **/
+  // addIngredientMongo(ingredient: Ingredient): Observable<Ingredient> {
 
-	  return this.http.post<Ingredient>(this.mongoIngredientsUrl, ingredient, httpOptions).pipe(
-		catchError(this.handleError<Ingredient>('addIngredient'))
-	  );
-  }
+	  // return this.http.post<Ingredient>(this.mongoIngredientsUrl, ingredient, httpOptions).pipe(
+		// catchError(this.handleError<Ingredient>('addIngredient'))
+	  // );
+  // }
   
   deleteIngredient(ingredient: Ingredient): Observable<Ingredient> {
 

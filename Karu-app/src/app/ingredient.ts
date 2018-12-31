@@ -6,3 +6,14 @@ export class Ingredient {
   //paymentTypeId?: number;
 }
 
+export class IngredientShow {
+	backendPrice: number;
+	middlePrice: number;
+	name: string;
+}
+
+export interface IngredientVisual {
+   name: string;
+   backendPrice: number;
+   middlePrice: number;
+}

@@ -14,27 +14,43 @@ import { Purchase } from '../purchase';
 export class OngoingOrderComponent implements OnInit {
 
   ongoingOrders: Order[] = [];
+  orders: Order[];
   purchasePrice: number = 0;
 
   // Falta agregar mensajes
   // 1) Si el get obtuvo un objeto, avisar
   // 2) Si el get no obtuvo nada, avisar también
+  
+  getOrders(): void {
+	  this.orderService.getOrders("M")
+      .subscribe(orders => this.orders = orders);
+  }
+  
   getOngoingOrder(): void {
-	this.orderService.getOngoingOrder()
+	this.orderService.getOrders("M")
       .subscribe(
-		ongoingOrder => {
+		orders => {
 		    /* ongoingOrder.orderPrice = 0;
 			for(var i = 0; i < ongoingOrder.items.length; i++){
 				ongoingOrder.orderPrice += ongoingOrder.items[i].itemPrice*ongoingOrder.items[i].amount;			
 			}
 			this.purchasePrice += ongoingOrder.orderPrice; */
-			this.ongoingOrders.push(ongoingOrder); 
-			this.updatePrices();
+			for(var i = 0; i < orders.length; i++){
+				console.log(orders[i])
+				var found = false
+				if(orders[i].ongoing == true){
+					for(var j = 0; j < this.ongoingOrders.length; i++){
+						if(this.ongoingOrders[i].id == orders[i].id){found = true; break}
+					}
+					if(found == false){
+						this.ongoingOrders.push(orders[i]);
+						this.updatePrices();
+					}
+					break					
+				}
+			}
 		}
-	  ); 
-	  
-	  
-	 
+	  );    
   }
   
   updatePrices(): void{
@@ -87,15 +103,35 @@ export class OngoingOrderComponent implements OnInit {
 	  
 	if( !this.ongoingOrders[0]) { return;}  
 	let purchase: Purchase = { orders : this.ongoingOrders};
-	//this.purchaseService.addPurchase(purchase)
-	//	.subscribe( this.ongoingOrders = [] );
-	this.purchaseService.addPurchase(purchase);
-	this.ongoingOrders = [];
-	this.purchasePrice = 0;
+
+	this.purchaseService.addPurchase(purchase)
+		.subscribe(purchase => {
+			if(purchase != undefined){
+				
+				for(var i=0; i< this.ongoingOrders.length; i++){
+					this.deleteOrder(this.ongoingOrders[i]);
+				}
+				this.ongoingOrders = [];
+				this.purchasePrice = 0;
+			}
+		});
+	
   }  
+  
+  deleteOrder(order: Order): void{
+	  const id = order.id;
+	  this.orderService.deleteOrder(order)
+		.subscribe(order => {
+			if(order == null){
+				this.orders = this.orders.filter(o => o.id != id);
+			}
+		});
+  }
+  
   constructor(private orderService: OrderService, private purchaseService: PurchaseService) { }
 
   ngOnInit() {
+	  this.getOrders();
   }
 
 }

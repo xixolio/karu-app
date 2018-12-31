@@ -19,4 +19,22 @@
   </li>
 </ul>
 
+<h2>Sandwiches en curso</h2>
+
+<ul class="orders">
+  <li *ngFor="let order of orders">
+    <div>RFID <span class="badge">{{order.rfID}}</span></div>
+	<div>Precio <span>{{order.orderPrice}}</span></div>
+	<ul>
+		<li *ngFor="let item of order.items">
+		<div>ingrediente <span class="badge">{{item.ingredient}}</span></div>
+		<div>precio <span class="badge">{{item.itemPrice}}</span></div>
+		<div>cantidad <span class="badge">{{item.amount}}</span></div>
+		<div>total <span class="badge">{{item.amount * item.itemPrice}}</span></div>
+		</li>
+	</ul>
+	<div><button (click)="deleteOrder(order)">Eliminar</button></div>
+  </li>
+</ul>
+
 
