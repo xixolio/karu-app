@@ -49,13 +49,13 @@ export class PurchaseService {
 	  );
   }
   
-  getPurchases(): Observable<Purchase[]> {
+  // getPurchases(): Observable<Purchase[]> {
 	  
-	  return this.http.get<Purchase[]>(this.purchaseUrl,httpOptions)
-	  	.pipe(
-	  		catchError(this.handleError('addPurchase', []))
-		);
-  }	
+	  // return this.http.get<Purchase[]>(this.purchaseUrl,httpOptions)
+	  	// .pipe(
+	  		// catchError(this.handleError('addPurchase', []))
+		// );
+  // }	
 	
   constructor(private http: HttpClient) { }
 }
