@@ -86,7 +86,7 @@ export class SpecialIngredientsComponent implements OnInit {
 		  
 		  var found = false
 		  for(var j = 0; j < this.receivingOrder.items.length; j++){
-				if(this.newItems[i].ingredient == this.receivingOrder.items[j].name){
+				if(this.newItems[i].ingredient == this.receivingOrder.items[j].ingredient){
 					this.receivingOrder.items[j].amount += 1;
 					//this.newItems[j].itemPrice += selectedIngredients[i].price;
 					found = true
