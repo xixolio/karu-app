@@ -83,7 +83,19 @@ export class SpecialIngredientsComponent implements OnInit {
   updateReceivingOrder(tabletId: number): void {
 	  if(this.newItems.length != 0 && this.receivingOrder != null){
 	  for(var i = 0; i < this.newItems.length; i++){
-		  this.receivingOrder.items.push(this.newItems[i])	  
+		  
+		  var found = false
+		  for(var j = 0; j < this.receivingOrder.items.length; j++){
+				if(this.newItems[i].ingredient == this.receivingOrder.items[j].name){
+					this.receivingOrder.items[j].amount += 1;
+					//this.newItems[j].itemPrice += selectedIngredients[i].price;
+					found = true
+					break;	
+				}					
+			}
+		  if(!found){
+			this.receivingOrder.items.push(this.newItems[i])	
+		  }
 	  }
 	  this.orderService.updateOrder(this.receivingOrder)
 	  .subscribe(
