@@ -103,6 +103,7 @@ export class IngredientsComponent implements OnInit {
 				});
 			}
 		}
+		)
   }
   
   checkSynchronized(ingredient: Ingredient): void {
@@ -126,23 +127,6 @@ export class IngredientsComponent implements OnInit {
 	  });  
   }
   
-  delete(ingredient): void {
-	  if(window.confirm('¿ Seguro que quiere eliminar este ingrediente ?')){
-		  
-		  this.ingredients = this.ingredients.filter(object => object != ingredient);
-		  
-		  /**  Estas 2 líneas hay que descomentarlas para eliminar los datos del ingrediente
-	       de la mongo!**/
-		  //this.ingredientsService.deleteIngredientMongo(ingredient)
-          //.subscribe();
-		  
-		  this.ingredientsService.deleteIngredient(ingredient)
-          .subscribe();
-		  
-		  
-	  }
-  }
-
   constructor(private ingredientsService: IngredientsService) { }
 
   ngOnInit() {

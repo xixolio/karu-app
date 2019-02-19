@@ -122,7 +122,6 @@ export class IngredientsService {
 	if( db == 'M' ){url = this.middleUrl}
 	  
 	const url_id = `${url}${ingredient.id}/`;
-	const url_id = `${url}${ingredient.id}/`;
 	
 	 return this.http.delete<Ingredient>(url_id, httpOptions).pipe(
 		catchError(this.handleError<Ingredient>('deleteIngredient'))
