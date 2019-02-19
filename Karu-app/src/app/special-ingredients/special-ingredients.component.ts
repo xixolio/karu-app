@@ -76,7 +76,7 @@ export class SpecialIngredientsComponent implements OnInit {
 		}
 		console.log(this.receivingOrder);
      }
-	 this.calculatePrice();
+
   }
   
   /** Se modifica la orden en la BD intermedia **/
