@@ -43,6 +43,7 @@ export class OngoingOrderComponent implements OnInit {
 						if(this.ongoingOrders[j].id == orders[i].id){found = true; break}
 					}
 					if(found == false){
+						console.log('made it')
 						this.ongoingOrders.push(orders[i]);
 						this.updatePrices();
 					}
