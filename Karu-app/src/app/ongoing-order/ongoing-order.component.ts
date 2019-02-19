@@ -40,7 +40,7 @@ export class OngoingOrderComponent implements OnInit {
 				var found = false
 				if(orders[i].ongoing == true){
 					for(var j = 0; j < this.ongoingOrders.length; i++){
-						if(this.ongoingOrders[i].id == orders[i].id){found = true; break}
+						if(this.ongoingOrders[j].id == orders[i].id){found = true; break}
 					}
 					if(found == false){
 						this.ongoingOrders.push(orders[i]);
