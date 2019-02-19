@@ -24,6 +24,8 @@ export class SpecialIngredientsComponent implements OnInit {
   
   newItems: Item[] = [];
   
+  var newItemsPrice = 0;
+  
   /** Se obtiene la orden asociada a la rfid  y a la tablet **/
   getReceivingOrder(tabletId: number): void {
 	tabletId = +tabletId
@@ -52,7 +54,6 @@ export class SpecialIngredientsComponent implements OnInit {
 			.filter(v => v != null);
      if(this.receivingOrder != null && selectedIngredients.length != 0){
 		for(var i = 0; i < selectedIngredients.length; i++){
-		 
 			var found = false
 			for(var j = 0; j < this.newItems.length; j++){
 				if(this.newItems[j].ingredient == selectedIngredients[i].name){
@@ -77,8 +78,19 @@ export class SpecialIngredientsComponent implements OnInit {
 		}
 		console.log(this.receivingOrder);
      }
+	 this.calculatePrice();
   }
   
+  calculatePrice(): void{
+	  for(var i = 0; i < this.newItems.length; i++){
+		  this.newItemsPrice + = this.newItems[i].itemPrice * this.newItems[i].amount;
+	  }
+	  for(var i = 0; i < this.receivingOrder.items.length; i++){
+
+		  this.receivingOrder.orderPrice + = this.receivingOrder.items[i].itemPrice * receivingOrder.items[i].amount;
+	  }
+	  
+  }
   /** Se modifica la orden en la BD intermedia **/
   updateReceivingOrder(tabletId: number): void {
 	  if(this.newItems.length != 0 && this.receivingOrder != null){
@@ -110,6 +122,7 @@ export class SpecialIngredientsComponent implements OnInit {
 	  );
 	  }
   }
+  
   
   /** Se obtienen los ingredientes especiales a partir de la BD principal**/
   getSpecialIngredients(): void {
