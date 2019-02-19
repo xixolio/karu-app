@@ -1,0 +1,48 @@
+<div *ngIf="ingredientsLoaded | async">
+	<form [formGroup]="form" (ngSubmit)="submit()">
+	  <label formArrayName="ingredients" *ngFor="let ingredient of form.controls.ingredients.controls; let i = index">
+		<input type="checkbox" [formControlName]="i">
+		{{ingredients[i].name}}
+	  </label>
+	  <div *ngIf="!form.valid">At least one order must be selected</div>
+	  <button [disabled]="!form.valid">submit</button>
+	</form> 
+</div>
+<div><button (click)="addItemToReceivingOrder()">Agregar</button></div>
+<div>
+<p>
+  <label> Tablet:
+	<input type='number' #tabletId size="1">
+  </label>
+  </p>
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button (click)="getReceivingOrder(tabletId.value)">
+    Obtener compra en curso
+  </button>
+</div> 
+
+<ul class="receivingOrder">
+<div *ngIf='receivingOrder != null'>
+    <div>RFID <span class="badge">{{receivingOrder.cardId}}</span></div>
+	<div>Precio <span>{{receivingOrder.orderPrice}}</span></div>
+	<ul>
+		<li *ngFor="let item of receivingOrder.items">
+		<div>ingrediente <span class="badge">{{item.ingredient}}</span></div>
+		<div>precio <span class="badge">{{item.itemPrice}}</span></div>
+		<div>cantidad <span class="badge">{{item.amount}}</span></div>
+		<div>total <span class="badge">{{item.amount * item.itemPrice}}</span></div>
+		</li>
+	</ul>
+	<ul>
+		<li *ngFor="let item of newItems">
+		<div>ingrediente <span class="badge">{{item.ingredient}}</span></div>
+		<div>precio <span class="badge">{{item.itemPrice}}</span></div>
+		<div>cantidad <span class="badge">{{item.amount}}</span></div>
+		<div>total <span class="badge">{{item.amount * item.itemPrice}}</span></div>
+		<div><button (click)="removeItemFromReceivingOrder(item)">Eliminar</button></div>
+		</li>
+	</ul>
+</div>
+</ul>
+<div><button (click)="updateReceivingOrder(tabletId.value)">Actualizar</button></div>
+

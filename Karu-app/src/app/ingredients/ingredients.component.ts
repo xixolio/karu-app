@@ -26,6 +26,16 @@ export class IngredientsComponent implements OnInit {
 		 }
 	 });
  }
+ 
+ deleteIngredient(ingredient: Ingredient): void {
+   this.ingredientsService.deleteIngredient(ingredient, 'M')
+     .subscribe(ingredient => {
+		 if(typeof(ingredient) == null){
+			 this.ingredientsService.deleteIngredient(ingredient, 'B')
+				.subscribe(_ => console.log('logrado'))
+		 }
+	 });
+ }
   
   // Gets ingredients from both BDs and creates a visible element that shows
   // the price at both bds, the name and scale of the ingredient.
@@ -70,20 +80,29 @@ export class IngredientsComponent implements OnInit {
   
   synchronize(ingredient: Ingredient): void {
 	  
-	  this.ingredientsService.getIngredient(ingredient,"M")
-		.subscribe(response => {		
-			// If the ingredient doesnt exist in the middle DB, create it
-			if(response == undefined){
-				this.ingredientsService.addIngredient(ingredient,'M')
-				.subscribe();
+	  this.ingredientsService.getIngredient(ingredient,"B")
+		.subscribe(response => {
+			// If the ingredient doesnt exist in the backend DB, delete it from the middle
+			if(response == undefined) {
+				this.ingredientsService.deleteIngredient(ingredient,'M');
 			}
-			// otherwise, update its content based on the content on the backend
+			// Otherwise, either add or update in the middle.
 			else{
-				this.ingredientsService.updateIngredient(ingredient,'M')
-				.subscribe();
+			  this.ingredientsService.getIngredient(ingredient,"M")
+				.subscribe(response => {		
+					// If the ingredient doesnt exist in the middle DB, create it
+					if(response == undefined){
+						this.ingredientsService.addIngredient(ingredient,'M')
+						.subscribe();
+					}
+					// otherwise, update its content based on the content on the backend
+					else{
+						this.ingredientsService.updateIngredient(ingredient,'M')
+						.subscribe();
+					}		
+				});
 			}
-			
-		});
+		}
   }
   
   checkSynchronized(ingredient: Ingredient): void {

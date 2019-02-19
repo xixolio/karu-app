@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { GlobalVariable } from './global';
+import { MessageService } from './message.service';
 
 const httpOptions = {
 	headers: new HttpHeaders({ 'Content-Type': 'application/json',
@@ -49,6 +50,7 @@ export class OrderService {
   private middleUrl = GlobalVariable.MIDDLE_API_URL + 'order/';
   
   private log(message: string) {	
+		this.messageService.add(`OrderService: ${message}`);
   }
   
   private handleError<T> (operation = 'operation', result?: T) {
@@ -74,6 +76,7 @@ export class OrderService {
 	  
 	  return this.http.get<Order[]>(url,httpOptions)
 	  	.pipe(
+			tap(_ => this.log('sandwiches traidos.')),
 	  		catchError(this.handleError('getOrders', []))
 		);
   }	
@@ -83,6 +86,7 @@ export class OrderService {
 	  
 	  return this.http.get<Order>(this.backendUrl,httpOptions)
 	  	.pipe(
+			tap(_ => this.log('sandwich en caja obtenido.')),
 	  		catchError(this.handleError<Order>('getOngoingOrder'))
 		);
   }	
@@ -96,8 +100,18 @@ export class OrderService {
 	  );
   }
   
+  updateOrder(order: Order): Observable<Order> {
+	  
+	  const url_id = `${this.middleUrl}${order.id}/`;
+	  
+	  return this.http.put<Order>(url_id, order, httpOptions).pipe(
+		catchError(this.handleError<Order>('updateOrder'))
+	  );
+  }
   
   
   
-  constructor(private http: HttpClient) { }
+  
+  constructor(private http: HttpClient, 
+			private messageService: MessageService) { }
 }

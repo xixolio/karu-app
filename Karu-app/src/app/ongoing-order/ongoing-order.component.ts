@@ -101,7 +101,8 @@ export class OngoingOrderComponent implements OnInit {
   // Falta Mensajito de que la compra fue agregada jeje
   addPurchase(): void {
 	  
-	if( !this.ongoingOrders[0]) { return;}  
+	if( !this.ongoingOrders[0]) { return;} 
+	if(!window.confirm("¿Desea finalizar la compra?")) { return;}
 	let purchase: Purchase = { orders : this.ongoingOrders};
 
 	this.purchaseService.addPurchase(purchase)

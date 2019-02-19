@@ -6,4 +6,5 @@ export class Order {
   items: Item[];
   rfID: number;
   ongoing: boolean;
+  receiving: number;
 }

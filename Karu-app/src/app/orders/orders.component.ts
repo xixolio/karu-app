@@ -13,7 +13,7 @@ export class OrdersComponent implements OnInit {
   orders: Order[];
   
   getOrders(): void {
-	this.orderService.getOrders()
+	this.orderService.getOrders('B')
       .subscribe(orders => this.orders = orders);
   }
 

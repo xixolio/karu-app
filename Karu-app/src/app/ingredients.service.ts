@@ -115,11 +115,20 @@ export class IngredientsService {
 	  // );
   // }
   
-  deleteIngredient(ingredient: Ingredient): Observable<Ingredient> {
+  deleteIngredient(ingredient: Ingredient, db): Observable<Ingredient> {
 
-	  return this.http.post<Ingredient>(this.mongoIngredientsUrl, ingredient, httpOptions).pipe(
-		catchError(this.handleError<Ingredient>('addIngredient'))
+	var url;
+	if( db == 'B' ){url = this.backendUrl}
+	if( db == 'M' ){url = this.middleUrl}
+	  
+	const url_id = `${url}${ingredient.id}/`;
+	const url_id = `${url}${ingredient.id}/`;
+	
+	 return this.http.delete<Ingredient>(url_id, httpOptions).pipe(
+		catchError(this.handleError<Ingredient>('deleteIngredient'))
 	  );
+	//	catchError(this.handleError<Ingredient>('addIngredient'))
+//  );
   }
   
   
