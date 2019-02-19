@@ -53,15 +53,25 @@ export class SpecialIngredientsComponent implements OnInit {
      if(this.receivingOrder != null && selectedIngredients.length != 0){
 		for(var i = 0; i < selectedIngredients.length; i++){
 		 
-			let newItem: Item = { itemPrice : selectedIngredients[i].price,
-								  amount : 1,
-								  ingredient : selectedIngredients[i].name
-								};
-			//newItem.id = selectedIngredients[i].id;
-			//newItem.itemPrice = selectedIngredients[i].price;
-			//newItem.amount = 1;
-			//newItem.ingredient = selectedIngredients[i].name;
-			this.newItems.push(newItem);
+			var found = false
+			for(var j = 0; j < this.newItems.length; j++){
+				if(this.newItems[j].name == selectedIngredients[i].name){
+					this.newItems[j].price += 1;
+					found = true
+					break;	
+				}					
+			}
+			if(!found){
+				let newItem: Item = { itemPrice : selectedIngredients[i].price,
+									  amount : 1,
+									  ingredient : selectedIngredients[i].name
+									};
+				//newItem.id = selectedIngredients[i].id;
+				//newItem.itemPrice = selectedIngredients[i].price;
+				//newItem.amount = 1;
+				//newItem.ingredient = selectedIngredients[i].name;
+				this.newItems.push(newItem);
+			}
 			//this.receivingOrder.items.push(newItem);
 		}
 		console.log(this.receivingOrder);
