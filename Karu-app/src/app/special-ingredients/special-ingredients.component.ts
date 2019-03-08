@@ -16,7 +16,7 @@ export class SpecialIngredientsComponent implements OnInit {
 
   form: FormGroup;
   
-  var orderPrice = 0;
+  orderPrice: number = 0;
   
   receivingOrder: Order;
   
@@ -38,6 +38,7 @@ export class SpecialIngredientsComponent implements OnInit {
 			if(orders.length != 1){ return }
 			this.receivingOrder = orders[0];
 			this.orderPrice = this.receivingOrder.orderPrice;
+			console.log(this.orderPrice);
 		}
 	  );    
   }

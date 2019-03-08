@@ -24,7 +24,7 @@
 <ul class="receivingOrder">
 <div *ngIf='receivingOrder != null'>
     <div>RFID <span class="badge">{{receivingOrder.cardId}}</span></div>
-	<div>Precio <span>{{receivingOrder.orderPrice + newItemsPrice}}</span></div>
+	<div>Precio <span>{{orderPrice}}</span></div>
 	<ul>
 		<li *ngFor="let item of receivingOrder.items">
 		<div>ingrediente <span class="badge">{{item.ingredient}}</span></div>
