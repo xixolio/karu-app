@@ -16,6 +16,8 @@ export class SpecialIngredientsComponent implements OnInit {
 
   form: FormGroup;
   
+  var orderPrice = 0;
+  
   receivingOrder: Order;
   
   ingredientsLoaded: Promise<boolean>;
@@ -35,13 +37,16 @@ export class SpecialIngredientsComponent implements OnInit {
 			orders = orders.filter(o => o.receiving == tabletId);
 			if(orders.length != 1){ return }
 			this.receivingOrder = orders[0];
+			this.orderPrice = this.receivingOrder.orderPrice;
 		}
 	  );    
   }
   
   /** Se elimina el nuevo item de la lista provisoria **/
   removeItemFromReceivingOrder(item: Item): void{
+		  const removedItem = this.newItems.filter(i => i == item);
 		  this.newItems = this.newItems.filter(i => i != item); 
+		  this.orderPrice -= removedItem[0].itemPrice*removedItem[0].amount;
   }
  
   /** Se agrega el ingrediente especial seleccionado a la orden, de forma provisoria **/
@@ -58,6 +63,7 @@ export class SpecialIngredientsComponent implements OnInit {
 					this.newItems[j].amount += 1;
 					//this.newItems[j].itemPrice += selectedIngredients[i].price;
 					found = true
+					this.orderPrice += selectedIngredients[i].price;
 					break;	
 				}					
 			}
@@ -71,6 +77,8 @@ export class SpecialIngredientsComponent implements OnInit {
 				//newItem.amount = 1;
 				//newItem.ingredient = selectedIngredients[i].name;
 				this.newItems.push(newItem);
+				this.orderPrice += selectedIngredients[i].price;
+				
 			}
 			//this.receivingOrder.items.push(newItem);
 		}
@@ -98,6 +106,7 @@ export class SpecialIngredientsComponent implements OnInit {
 			this.receivingOrder.items.push(this.newItems[i])	
 		  }
 	  }
+	  this.receivingOrder.orderPrice = this.orderPrice;
 	  this.orderService.updateOrder(this.receivingOrder)
 	  .subscribe(
 		order => {
