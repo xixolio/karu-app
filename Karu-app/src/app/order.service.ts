@@ -6,6 +6,8 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { GlobalVariable } from './global';
 import { MessageService } from './message.service';
+import { BehaviorSubject } from 'rxjs';
+
 
 const httpOptions = {
 	headers: new HttpHeaders({ 'Content-Type': 'application/json',
@@ -48,6 +50,9 @@ export class OrderService {
   
   private backendUrl = GlobalVariable.BASE_API_URL + 'order/';
   private middleUrl = GlobalVariable.MIDDLE_API_URL + 'order/';
+  
+  private messageSource = new BehaviorSubject('default message');
+  currentMessage = this.messageSource.asObservable();
   
   private log(message: string) {	
 		this.messageService.add(`OrderService: ${message}`);
@@ -114,4 +119,8 @@ export class OrderService {
   
   constructor(private http: HttpClient, 
 			private messageService: MessageService) { }
+			
+  changeMessage(message: string){
+		this.messageSource.next(message);
+  }
 }

@@ -10,6 +10,8 @@ import { OrdersComponent } from './orders/orders.component';
 import { OngoingOrderComponent } from './ongoing-order/ongoing-order.component';
 import { MessagesComponent } from './messages/messages.component';
 import { SpecialIngredientsComponent } from './special-ingredients/special-ingredients.component';
+import { KitchenComponent } from './kitchen/kitchen.component';
+import { PlanBComponent } from './plan-b/plan-b.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { SpecialIngredientsComponent } from './special-ingredients/special-ingre
     OrdersComponent,
     OngoingOrderComponent,
     MessagesComponent,
-    SpecialIngredientsComponent
+    SpecialIngredientsComponent,
+    KitchenComponent,
+    PlanBComponent
   ],
   imports: [
     BrowserModule,

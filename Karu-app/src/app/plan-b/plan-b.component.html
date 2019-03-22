@@ -1,9 +1,13 @@
 <div *ngIf="ingredientsLoaded | async">
 	<form [formGroup]="form" (ngSubmit)="submit()">
+	<ul class="columnList">
 	  <label formArrayName="ingredients" *ngFor="let ingredient of form.controls.ingredients.controls; let i = index">
-		<input type="checkbox" [formControlName]="i">
-		{{ingredients[i].name}}
+		<li>
+		<div class='a'><input type="checkbox" [formControlName]="i">
+		 {{ingredients[i].name}}</div>
+		</li>
 	  </label>
+	 </ul>
 	  <div *ngIf="!form.valid">At least one order must be selected</div>
 	  <button [disabled]="!form.valid">submit</button>
 	</form> 

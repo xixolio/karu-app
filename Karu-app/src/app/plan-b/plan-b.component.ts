@@ -7,12 +7,11 @@ import { Order } from '../order';
 import { Item } from '../item';
 
 @Component({
-  selector: 'app-special-ingredients',
-  templateUrl: './special-ingredients.component.html',
-  styleUrls: ['./special-ingredients.component.css']
+  selector: 'app-plan-b',
+  templateUrl: './plan-b.component.html',
+  styleUrls: ['./plan-b.component.css']
 })
-
-export class SpecialIngredientsComponent implements OnInit {
+export class PlanBComponent implements OnInit {
 
   form: FormGroup;
   
@@ -125,11 +124,11 @@ export class SpecialIngredientsComponent implements OnInit {
   
   
   /** Se obtienen los ingredientes especiales a partir de la BD principal**/
-  getSpecialIngredients(): void {
+  getIngredients(): void {
 	
 	this.ingredientsService.getIngredients("B")
       .subscribe(ingredients => {
-		  ingredients = ingredients.filter(i => i.scale == -1);
+		  ingredients = ingredients.filter(i => i.scale != -1);
 		  this.ingredients = ingredients; 
 		  if(ingredients.length == 0){return;}
 		  const controls = this.ingredients.map(c => new FormControl(false));
@@ -157,9 +156,10 @@ export class SpecialIngredientsComponent implements OnInit {
   }
   
   ngOnInit() {
-	  this.getSpecialIngredients();
+	  this.getIngredients();
 	  this.orderService.currentMessage.subscribe(message => this.message = message)
   }
+
 }
 
 function minSelectedCheckboxes(min = 1) {
@@ -176,5 +176,3 @@ function minSelectedCheckboxes(min = 1) {
 
   return validator;
 }
-
-
