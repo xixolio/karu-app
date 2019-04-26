@@ -84,7 +84,7 @@ export class SpecialIngredientsComponent implements OnInit {
 					this.orderPrice -= removedItem[0].itemPrice;
 				}
 			}
-	  const removedItem = this.newItems.filter(i => i.ingredient == ingredient.name);
+	  //const removedItem = this.newItems.filter(i => i.ingredient == ingredient.name);
 	  
 	}
   }
@@ -223,14 +223,14 @@ export class SpecialIngredientsComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private ingredientsService: IngredientsService,
   private orderService: OrderService) { 
   }
-  
+  /**
   submit() {
 	const selectedIngredientsIds = this.form.value.ingredients
 			.map((v,i) => v ? this.ingredients[i].id : null)
 			.filter(v => v != null);
     console.log(selectedIngredientsIds);
   }
-  
+  **/
   ngOnInit() {
 	  this.getSpecialIngredients();
 	  this.orderService.currentMessage.subscribe(message => this.message = message)
