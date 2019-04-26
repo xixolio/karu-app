@@ -6,12 +6,13 @@ span {
 }
 .left {
   text-align: left;
-  width: 50px;
+  width: 100px;
 }
 .left2 {
   text-align: left;
-  width: 50px;
+  width: 100px;
 }
 .right {
   text-align: right;
+  width: 100px;
 }
