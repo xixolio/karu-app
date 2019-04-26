@@ -14,7 +14,7 @@ import { Item } from '../item';
 
 export class SpecialIngredientsComponent implements OnInit {
 
-  form: FormGroup;
+  //form: FormGroup;
   
   orderPrice: number = 0;
   
@@ -115,6 +115,7 @@ export class SpecialIngredientsComponent implements OnInit {
   
  
   /** Se agrega el ingrediente especial seleccionado a la orden, de forma provisoria **/
+  /**
   addItemsToReceivingOrder(): void {
 	  
 	 const selectedIngredients = this.form.value.ingredients
@@ -151,7 +152,7 @@ export class SpecialIngredientsComponent implements OnInit {
      }
 
   }
-  
+  **/
   
   
   /** Se modifica la orden en la BD intermedia **/
@@ -220,7 +221,7 @@ export class SpecialIngredientsComponent implements OnInit {
 
   }
   
-  constructor(private formBuilder: FormBuilder, private ingredientsService: IngredientsService,
+  constructor(private ingredientsService: IngredientsService,
   private orderService: OrderService) { 
   }
   /**
