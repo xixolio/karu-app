@@ -201,7 +201,7 @@ export class SpecialIngredientsComponent implements OnInit {
 		  //this.ingredients = ingredients; 
 		  for(var i=0; i < ingredients.length; i++){
 			  this.labels.add(ingredients[i].label);
-			  this.ingredients.push([ingredients[i],0);
+			  this.ingredients.push([ingredients[i],0]);
 		  }
 		  this.labels.add("Todo");
 		  console.log(this.labels);
