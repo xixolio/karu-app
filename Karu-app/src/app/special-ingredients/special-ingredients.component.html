@@ -1,4 +1,4 @@
-<div *ngIf="ingredientsLoaded | async">
+<!-- <div *ngIf="ingredientsLoaded | async">
 	<form [formGroup]="form" (ngSubmit)="submit()">
 	  <label formArrayName="ingredients" *ngFor="let ingredient of form.controls.ingredients.controls; let i = index">
 		<input type="checkbox" [formControlName]="i">
@@ -8,7 +8,25 @@
 	  <button [disabled]="!form.valid">submit</button>
 	</form> 
 </div>
-<div><button (click)="addItemToReceivingOrder()">Agregar</button></div>
+-->
+<div *ngIf='receivingOrder != null'>
+<font size="6">
+	<div style="position: fixed;top:0; right:0;"> 
+		Precio <span>{{orderPrice}}</span>
+		<div>
+		<button (click)="updateReceivingOrder(tabletId.value)" 
+		style="height:40px;width:200px"><font size="6">Confirmar</font></button>
+		</div>
+	</div>
+</font>
+</div>
+
+<select name="selectLabel" [(ngModel)]="selected" style="font-size:20px;height:40px;width:200px">>
+    <option *ngFor="let label of labels" [ngValue]="label" style="font-size:20px;">
+       {{ label }} 
+    </option>
+</select> 
+
 <div>
 <p>
   <label> Tablet:
@@ -21,10 +39,30 @@
   </button>
 </div> 
 
+<h2>Ingredientes</h2>
+<ul class="ingredients">
+  <div *ngFor="let ingredient of ingredients">
+	<div *ngIf="ingredient[0].label == selected || selected=='Todo'" >
+		<font size="6"><span class="badge">{{ingredient[0].name}} </span> 
+		<span class="badge">{{ingredient[0].price}}</span> 
+		<div>
+		<button (click)="addItem(ingredient)" style="height:30px;width:30px">+</button>
+		<button (click)="substractItem(ingredient)" style="height:30px;width:30px">-</button>
+		<span class="badge">{{ingredient[1]}}</span> 
+		</div>
+		</font>
+	</div>
+  </div>
+  
+</ul>
+
+<!-- <div><button (click)="addItemToReceivingOrder()">Agregar</button></div> -->
+
+
 <ul class="receivingOrder">
 <div *ngIf='receivingOrder != null'>
     <div>RFID <span class="badge">{{receivingOrder.cardId}}</span></div>
-	<div>Precio <span>{{orderPrice}}</span></div>
+	<div> Precio <span>{{orderPrice}}</span></div>
 	<ul>
 		<li *ngFor="let item of receivingOrder.items">
 		<div>ingrediente <span class="badge">{{item.ingredient}}</span></div>
@@ -44,6 +82,6 @@
 	</ul>
 </div>
 </ul>
-<div><button (click)="updateReceivingOrder(tabletId.value)">Actualizar</button></div>
+
 
 {{message}}

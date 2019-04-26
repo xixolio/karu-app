@@ -10,10 +10,12 @@ export class IngredientShow {
 	backendPrice: number;
 	middlePrice: number;
 	name: string;
+	label: string;
 }
 
 export interface IngredientVisual {
    name: string;
    backendPrice: number;
    middlePrice: number;
+   label: string;
 }

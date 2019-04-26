@@ -22,11 +22,19 @@ export class SpecialIngredientsComponent implements OnInit {
   
   ingredientsLoaded: Promise<boolean>;
   
-  ingredients: Ingredient[];
+  //ingredients: Ingredient[];
+  //ingredientsAmounts: number[];
+  ingredients: [Ingredient, any][] = [];
   
   newItems: Item[] = [];
   
   message:string;
+  
+  labels = new Set();
+  
+  selected: string = "Todo";
+  
+  caja: boolean = false;
   
   /** Se obtiene la orden asociada a la rfid  y a la tablet **/
   getReceivingOrder(tabletId: number): void {
@@ -36,8 +44,13 @@ export class SpecialIngredientsComponent implements OnInit {
 	this.orderService.getOrders("M")
       .subscribe(
 		orders => {
+			this.caja = false;
 			orders = orders.filter(o => o.receiving == tabletId);
-			if(orders.length != 1){ return }
+			if(orders.length != 1){ 
+				orders = orders.filter(o => o.ongoing == true);
+				if(orders.length != 1){ return }
+				this.caja = true;
+			}
 			this.receivingOrder = orders[0];
 			this.orderPrice = this.receivingOrder.orderPrice;
 			console.log(this.orderPrice);
@@ -51,9 +64,58 @@ export class SpecialIngredientsComponent implements OnInit {
 		  this.newItems = this.newItems.filter(i => i != item); 
 		  this.orderPrice -= removedItem[0].itemPrice*removedItem[0].amount;
   }
+  
+  /** Se resta una unidad del item de la lista provisoria **/
+  substractItem(object: [Ingredient, any]): void{
+	 const ingredient = object[0];
+	 const amount = object[1];
+     if(this.receivingOrder != null){
+		    
+			const removedItem = this.newItems.filter(i => i.ingredient == ingredient.name);
+			if(removedItem.length != 0){
+				object[1] -= 1;
+				this.newItems = this.newItems.filter(i => i.ingredient != ingredient.name); 
+				if(removedItem[0].amount == 1){
+					this.orderPrice -= removedItem[0].itemPrice;
+				}
+				else{
+					removedItem[0].amount -= 1;
+					this.newItems.push(removedItem[0]);
+					this.orderPrice -= removedItem[0].itemPrice;
+				}
+			}
+	  const removedItem = this.newItems.filter(i => i.ingredient == ingredient.name);
+	  
+	}
+  }
+  
+  addItem(object: [Ingredient, any]): void{
+	 const ingredient = object[0];
+	 const amount = object[1];
+     if(this.receivingOrder != null){
+			object[1] += 1;
+			const removedItem = this.newItems.filter(i => i.ingredient == ingredient.name);
+			if(removedItem.length == 0){
+				let newItem: Item = { itemPrice : ingredient.price,
+									  amount : 1,
+									  ingredient : ingredient.name
+									};
+				this.newItems.push(newItem);
+				this.orderPrice += newItem.itemPrice;
+			}
+			else{
+				removedItem[0].amount += 1;
+				this.newItems = this.newItems.filter(i => i.ingredient != ingredient.name); 
+				this.newItems.push(removedItem[0]);
+				this.orderPrice += removedItem[0].itemPrice;
+			}
+	}
+  }
+  
+  
  
   /** Se agrega el ingrediente especial seleccionado a la orden, de forma provisoria **/
-  addItemToReceivingOrder(): void {
+  addItemsToReceivingOrder(): void {
 	  
 	 const selectedIngredients = this.form.value.ingredients
 			.map((v,i) => v ? this.ingredients[i] : null)
@@ -90,6 +152,8 @@ export class SpecialIngredientsComponent implements OnInit {
 
   }
   
+  
+  
   /** Se modifica la orden en la BD intermedia **/
   updateReceivingOrder(tabletId: number): void {
 	  if(this.newItems.length != 0 && this.receivingOrder != null){
@@ -117,6 +181,9 @@ export class SpecialIngredientsComponent implements OnInit {
 			this.getReceivingOrder(tabletId);
 			if( order != null ){
 				this.newItems = [];
+				for(var i=0; i < this.ingredients.length; i++){
+					this.ingredients[i][1] = 0;
+				}
 			}
 		}
 	  );
@@ -130,15 +197,23 @@ export class SpecialIngredientsComponent implements OnInit {
 	this.ingredientsService.getIngredients("B")
       .subscribe(ingredients => {
 		  ingredients = ingredients.filter(i => i.scale == -1);
-		  this.ingredients = ingredients; 
-		  if(ingredients.length == 0){return;}
-		  const controls = this.ingredients.map(c => new FormControl(false));
-		  console.log(controls);
-		  controls[0].setValue(true);
-		  this.form = this.formBuilder.group({
-			ingredients: new FormArray(controls, minSelectedCheckboxes(1))
-			});
-		  this.ingredientsLoaded = Promise.resolve(true);
+		  
+		  //this.ingredients = ingredients; 
+		  for(var i=0; i < ingredients.length; i++){
+			  this.labels.add(ingredients[i].label);
+			  this.ingredients.push([ingredients[i],0);
+		  }
+		  this.labels.add("Todo");
+		  console.log(this.labels);
+		  
+		  //if(ingredients.length == 0){return;}
+		  //const controls = this.ingredients.map(c => new FormControl(false));
+		  //console.log(controls);
+		  //controls[0].setValue(true);
+		  //this.form = this.formBuilder.group({
+		  //	ingredients: new FormArray(controls, minSelectedCheckboxes(1))
+		//	});
+		  //this.ingredientsLoaded = Promise.resolve(true);
 		  });
 	//this.ingredientsService.getIngredients("M")
 	//	.subscribe(ingredients => this.middleIngredients = ingredients);

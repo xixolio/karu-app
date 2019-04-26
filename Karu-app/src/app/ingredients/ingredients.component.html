@@ -4,6 +4,7 @@
     <span class="badge">{{ingredient.name}}</span> 
 	<label> precio <input [(ngModel)]="ingredient.price" placeholder="ingredient" size="5"></label>
 	<label> pesa <input [(ngModel)]="ingredient.scale" placeholder="ingredient" size="5"></label>
+	<label> label <input [(ngModel)]="ingredient.label" placeholder="ingredient" size="5"></label>
 	<button (click)="save(ingredient)">Modificar</button>
 	<button (click)="synchronize(ingredient)">Sincronizar</button>
 	<button (click)="deleteIngredient(ingredient)">Delete</button>
@@ -26,9 +27,14 @@
 	<input #scale size="1">
   </label>
   </p>
+  <p>
+  <label> Etiqueta:
+	<input #label size="1">
+  </label>
+  </p>
   <!-- (click) passes input value to add() and then clears the input -->
-  <button (click)="add(name.value, price.value, scale.value ); name.value=''; price.value='';
-  scale.value=''">
+  <button (click)="add(name.value, price.value, scale.value, label.value ); name.value=''; price.value='';
+  scale.value=''; label.value='';">
     Agregar ingrediente
   </button>
 </div>

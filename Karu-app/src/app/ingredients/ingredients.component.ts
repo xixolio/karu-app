@@ -113,11 +113,11 @@ export class IngredientsComponent implements OnInit {
 	  
   }
   
-  add(name: string, price: number, scale: number): void {
+  add(name: string, price: number, scale: number, label: string): void {
 	  
-	  if(!name || !price ||  !scale){ return; }
+	  if(!name || !price ||  !scale || !label){ return; }
 	  
-	  let ingredient: Ingredient = { name : name, price: price, scale: scale };
+	  let ingredient: Ingredient = { name : name, price: price, scale: scale, label: label };
 		   
 	  this.ingredientsService.addIngredient(ingredient,'B')
       .subscribe(ingredient => {
