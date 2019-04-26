@@ -236,7 +236,7 @@ export class SpecialIngredientsComponent implements OnInit {
 	  this.orderService.currentMessage.subscribe(message => this.message = message)
   }
 }
-
+/**
 function minSelectedCheckboxes(min = 1) {
   const validator: ValidatorFn = (formArray: FormArray) => {
     const totalSelected = formArray.controls
@@ -251,5 +251,5 @@ function minSelectedCheckboxes(min = 1) {
 
   return validator;
 }
-
+**/
 
