@@ -9,7 +9,6 @@
 	</form> 
 </div>
 -->
-<!--
 <div *ngIf='receivingOrder != null'>
 <font size="6">
 	<div style="position: fixed;top:0; right:0;"> 
@@ -35,7 +34,6 @@
   </label>
   </p>
   <!-- (click) passes input value to add() and then clears the input -->
-  <!--
   <button (click)="getReceivingOrder(tabletId.value)">
     Obtener compra en curso
   </button>
@@ -45,14 +43,23 @@
 <ul class="ingredients">
   <div *ngFor="let ingredient of ingredients">
 	<div *ngIf="ingredient[0].label == selected || selected=='Todo'" >
-		<font size="6"><span class="badge">{{ingredient[0].name}} </span> 
+	<li>
+		<font size="6">
+		<!--<span class="badge">{{ingredient[0].name}} </span> 
 		<span class="badge">{{ingredient[0].price}}</span> 
-		<div>
-		<button (click)="addItem(ingredient)" style="height:30px;width:30px">+</button>
-		<button (click)="substractItem(ingredient)" style="height:30px;width:30px">-</button>
+		<span class="right">
+		<button (click)="addItem(ingredient)" style="height:50px;width:50px;">+</button>
+		<button (click)="substractItem(ingredient)" style="height:50px;width:50px;">-</button>
+		</span>
 		<span class="badge">{{ingredient[1]}}</span> 
-		</div>
+		-->
+		<span class="left">{{ingredient[0].name}}</span>
+		<span class="left2">{{ingredient[0].price}} </span> 
+		<span class="right"><button (click)="addItem(ingredient)" style="height:50px;width:50px;">+</button></span>
+		<span class="right"><button (click)="substractItem(ingredient)" style="height:50px;width:50px;">-</button></span>
+		<span class="left">{{ingredient[1]}}</span> 
 		</font>
+	</li>
 	</div>
   </div>
   
@@ -60,7 +67,7 @@
 
 <!-- <div><button (click)="addItemToReceivingOrder()">Agregar</button></div> -->
 
-<!--
+
 <ul class="receivingOrder">
 <div *ngIf='receivingOrder != null'>
     <div>RFID <span class="badge">{{receivingOrder.cardId}}</span></div>
