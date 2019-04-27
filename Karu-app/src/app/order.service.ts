@@ -7,6 +7,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { GlobalVariable } from './global';
 import { MessageService } from './message.service';
 import { BehaviorSubject } from 'rxjs';
+import { Price } from './price';
 
 
 const httpOptions = {
@@ -50,6 +51,7 @@ export class OrderService {
   
   private backendUrl = GlobalVariable.BASE_API_URL + 'order/';
   private middleUrl = GlobalVariable.MIDDLE_API_URL + 'order/';
+  private middleUrlprice = GlobalVariable.MIDDLE_API_URL + 'price/';
   
   private messageSource = new BehaviorSubject('default message');
   currentMessage = this.messageSource.asObservable();
@@ -111,6 +113,15 @@ export class OrderService {
 	  
 	  return this.http.put<Order>(url_id, order, httpOptions).pipe(
 		catchError(this.handleError<Order>('updateOrder'))
+	  );
+  }
+  
+  updatePrice(price: Price): Observable<Price> {
+	  
+	  const url_id = `${this.middleUrlprice}1/`;
+	  
+	  return this.http.put<Price>(url_id, price, httpOptions).pipe(
+		catchError(this.handleError<Price>('updatePrice'))
 	  );
   }
   

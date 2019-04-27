@@ -5,7 +5,7 @@ import { IngredientsService } from '../ingredients.service';
 import { OrderService } from '../order.service';
 import { Order } from '../order';
 import { Item } from '../item';
-
+import { Price } from '../price';
 @Component({
   selector: 'app-special-ingredients',
   templateUrl: './special-ingredients.component.html',
@@ -30,6 +30,8 @@ export class SpecialIngredientsComponent implements OnInit {
   
   message:string;
   
+  placeholderPrice: Price;
+  
   labels = new Set();
   
   selected: string = "Todo";
@@ -53,7 +55,11 @@ export class SpecialIngredientsComponent implements OnInit {
 			}
 			this.receivingOrder = orders[0];
 			this.orderPrice = this.receivingOrder.orderPrice;
+			this.placeholderPrice = { name: "placeholder";
+											price: this.orderPrice};
 			console.log(this.orderPrice);
+			console.log(this.placeholderPrice);
+			this.updatePrice();
 		}
 	  );    
   }
@@ -77,11 +83,13 @@ export class SpecialIngredientsComponent implements OnInit {
 				this.newItems = this.newItems.filter(i => i.ingredient != ingredient.name); 
 				if(removedItem[0].amount == 1){
 					this.orderPrice -= removedItem[0].itemPrice;
+					this.updatePrice();
 				}
 				else{
 					removedItem[0].amount -= 1;
 					this.newItems.push(removedItem[0]);
 					this.orderPrice -= removedItem[0].itemPrice;
+					this.updatePrice();
 				}
 			}
 	  //const removedItem = this.newItems.filter(i => i.ingredient == ingredient.name);
@@ -102,12 +110,14 @@ export class SpecialIngredientsComponent implements OnInit {
 									};
 				this.newItems.push(newItem);
 				this.orderPrice += newItem.itemPrice;
+				this.updatePrice();
 			}
 			else{
 				removedItem[0].amount += 1;
 				this.newItems = this.newItems.filter(i => i.ingredient != ingredient.name); 
 				this.newItems.push(removedItem[0]);
 				this.orderPrice += removedItem[0].itemPrice;
+				this.updatePrice();
 			}
 	}
   }
@@ -153,7 +163,11 @@ export class SpecialIngredientsComponent implements OnInit {
 
   }
   **/
-  
+  updatePrice(): void {
+	this.placeholderPrice.price = this.orderPrice;
+	this.orderService.updatePrice(this.placeholderPrice)
+	  .subscribe();
+  }
   
   /** Se modifica la orden en la BD intermedia **/
   updateReceivingOrder(tabletId: number): void {
