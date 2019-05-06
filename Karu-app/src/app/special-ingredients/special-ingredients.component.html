@@ -78,9 +78,13 @@
 		<div>precio <span class="badge">{{item.itemPrice}}</span></div>
 		<div>cantidad <span class="badge">{{item.amount}}</span></div>
 		<div>total <span class="badge">{{item.amount * item.itemPrice}}</span></div>
+		<div *ngIf='caja == true'>
+			<div><button (click)="removeItemFromReceivingOrder(item)">Eliminar</button></div>
+		</div>
 		</li>
 	</ul>
 	<ul>
+		
 		<li *ngFor="let item of newItems">
 		<div>ingrediente <span class="badge">{{item.ingredient}}</span></div>
 		<div>precio <span class="badge">{{item.itemPrice}}</span></div>

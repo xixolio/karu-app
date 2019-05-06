@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormArray, FormControl, ValidatorFn } from '@an
 import {Ingredient } from '../ingredient';
 import { IngredientsService } from '../ingredients.service';
 import { OrderService } from '../order.service';
+import { ItemService } from '../item.service';
 import { Order } from '../order';
 import { Item } from '../item';
 import { Price } from '../price';
@@ -47,15 +48,19 @@ export class SpecialIngredientsComponent implements OnInit {
       .subscribe(
 		orders => {
 			this.caja = false;
-			orders = orders.filter(o => o.receiving == tabletId);
-			if(orders.length != 1){ 
+			if(tabletId == 100){
 				orders = orders.filter(o => o.ongoing == true);
-				if(orders.length != 1){ return }
 				this.caja = true;
+			}
+			else{
+				orders = orders.filter(o => o.receiving == tabletId);
+			}
+			if(orders.length != 1){ 
+				return
 			}
 			this.receivingOrder = orders[0];
 			this.orderPrice = this.receivingOrder.orderPrice;
-			this.placeholderPrice = { name: "placeholder";
+			this.placeholderPrice = { name: "placeholder",
 											price: this.orderPrice};
 			console.log(this.orderPrice);
 			console.log(this.placeholderPrice);
@@ -66,11 +71,18 @@ export class SpecialIngredientsComponent implements OnInit {
   
   /** Se elimina el nuevo item de la lista provisoria **/
   removeItemFromReceivingOrder(item: Item): void{
-		  const removedItem = this.newItems.filter(i => i == item);
-		  this.newItems = this.newItems.filter(i => i != item); 
-		  this.orderPrice -= removedItem[0].itemPrice*removedItem[0].amount;
+		  var removedItem = this.newItems.filter(i => i == item);
+		  if(removedItem.length==0 && this.caja == true){
+			  removedItem = this.receivingOrder.items.filter(i => i == item);
+			  this.receivingOrder.items  = this.receivingOrder.items.filter(i => i != item);
+		  }
+		  else{
+			  this.newItems = this.newItems.filter(i => i != item); 
+		  }  
+		  this.orderPrice -= removedItem[0].itemPrice*removedItem[0].amount;	
+		  this.updatePrice();
   }
-  
+ 
   /** Se resta una unidad del item de la lista provisoria **/
   substractItem(object: [Ingredient, any]): void{
 	 const ingredient = object[0];
@@ -79,16 +91,17 @@ export class SpecialIngredientsComponent implements OnInit {
 		    
 			const removedItem = this.newItems.filter(i => i.ingredient == ingredient.name);
 			if(removedItem.length != 0){
-				object[1] -= 1;
+				const decrement = ((object[1] > 1) ? 0.5 : 1);
+				object[1] -= decrement;
 				this.newItems = this.newItems.filter(i => i.ingredient != ingredient.name); 
 				if(removedItem[0].amount == 1){
 					this.orderPrice -= removedItem[0].itemPrice;
 					this.updatePrice();
 				}
 				else{
-					removedItem[0].amount -= 1;
+					removedItem[0].amount -= decrement;
 					this.newItems.push(removedItem[0]);
-					this.orderPrice -= removedItem[0].itemPrice;
+					this.orderPrice -= decrement*removedItem[0].itemPrice;
 					this.updatePrice();
 				}
 			}
@@ -101,7 +114,9 @@ export class SpecialIngredientsComponent implements OnInit {
 	 const ingredient = object[0];
 	 const amount = object[1];
      if(this.receivingOrder != null){
-			object[1] += 1;
+			const increment = ( object[1] >= 1? 0.5 : 1);
+			//if(object[1] >= 1){ increment = 0.5}
+			object[1] += increment;
 			const removedItem = this.newItems.filter(i => i.ingredient == ingredient.name);
 			if(removedItem.length == 0){
 				let newItem: Item = { itemPrice : ingredient.price,
@@ -113,10 +128,10 @@ export class SpecialIngredientsComponent implements OnInit {
 				this.updatePrice();
 			}
 			else{
-				removedItem[0].amount += 1;
+				removedItem[0].amount += increment;
 				this.newItems = this.newItems.filter(i => i.ingredient != ingredient.name); 
 				this.newItems.push(removedItem[0]);
-				this.orderPrice += removedItem[0].itemPrice;
+				this.orderPrice += increment*removedItem[0].itemPrice;
 				this.updatePrice();
 			}
 	}
@@ -188,11 +203,13 @@ export class SpecialIngredientsComponent implements OnInit {
 			this.receivingOrder.items.push(this.newItems[i])	
 		  }
 	  }
+	  }
 	  this.receivingOrder.orderPrice = this.orderPrice;
+	  console.log(this.receivingOrder);
 	  this.orderService.updateOrder(this.receivingOrder)
 	  .subscribe(
 		order => {
-			console.log('aca');
+			console.log(order);
 			this.getReceivingOrder(tabletId);
 			if( order != null ){
 				this.newItems = [];
@@ -202,7 +219,7 @@ export class SpecialIngredientsComponent implements OnInit {
 			}
 		}
 	  );
-	  }
+	  
   }
   
   
@@ -236,7 +253,7 @@ export class SpecialIngredientsComponent implements OnInit {
   }
   
   constructor(private ingredientsService: IngredientsService,
-  private orderService: OrderService) { 
+	private orderService: OrderService, private itemService: ItemService) { 
   }
   /**
   submit() {
@@ -248,7 +265,9 @@ export class SpecialIngredientsComponent implements OnInit {
   **/
   ngOnInit() {
 	  this.getSpecialIngredients();
-	  this.orderService.currentMessage.subscribe(message => this.message = message)
+	  this.orderService.currentMessage.subscribe(message => this.message = message);
+	  this.itemService.setUrlHistoryObj();
+		console.log(this.itemService.getUrlHistoryObj());
   }
 }
 /**
