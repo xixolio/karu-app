@@ -96,11 +96,11 @@ export class SpecialIngredientsComponent implements OnInit {
 		    
 			const removedItem = this.newItems.filter(i => i.ingredient == ingredient.name);
 			if(removedItem.length != 0){
-				const decrement = ((object[1] > 1) ? 0.5 : 1);
+				const decrement = ((object[1] > 1) ? 0.5 : 0.5);
 				object[1] -= decrement;
 				this.newItems = this.newItems.filter(i => i.ingredient != ingredient.name); 
-				if(removedItem[0].amount == 1){
-					this.orderPrice -= removedItem[0].itemPrice;
+				if(removedItem[0].amount == 0.5){
+					this.orderPrice -= removedItem[0].itemPrice*decrement;
 					this.updatePrice();
 				}
 				else{
