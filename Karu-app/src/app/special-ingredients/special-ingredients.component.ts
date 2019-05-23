@@ -216,9 +216,8 @@ export class SpecialIngredientsComponent implements OnInit {
 		order => {
 			console.log(order);
 			console.log(order == undefined);
-			this.getReceivingOrder(tabletId);
 			if( order != undefined ){
-				
+				this.getReceivingOrder(tabletId);
 				this.newItems = [];
 				for(var i=0; i < this.ingredients.length; i++){
 					this.ingredients[i][1] = 0;
