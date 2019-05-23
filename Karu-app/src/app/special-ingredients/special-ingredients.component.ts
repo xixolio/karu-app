@@ -215,6 +215,7 @@ export class SpecialIngredientsComponent implements OnInit {
 	  .subscribe(
 		order => {
 			console.log(order);
+			console.log(order == undefined);
 			this.getReceivingOrder(tabletId);
 			if( order != undefined ){
 				
