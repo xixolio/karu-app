@@ -110,7 +110,7 @@ export class OrderService {
   updateOrder(order: Order): Observable<Order> {
 	  
 	  const url_id = `${this.middleUrl}${order.id}/`;
-	  
+	  console.log(order);	
 	  return this.http.put<Order>(url_id, order, httpOptions).pipe(
 		catchError(this.handleError<Order>('updateOrder'))
 	  );

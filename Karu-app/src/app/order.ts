@@ -7,4 +7,5 @@ export class Order {
   rfID: number;
   ongoing: boolean;
   receiving: number;
+  name?: string;
 }

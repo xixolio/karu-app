@@ -1,0 +1,22 @@
+
+input[type=text], select, textarea {
+  width: 50%;
+  height: 100px;
+  padding: 1px;
+  border: 1px solid #ccc;
+  border-radius: 1px;
+  resize: none;
+  background-color: #f8f8f8;
+  font-size: 20px;
+}
+
+.sender {
+	font-size: 1.875em;	
+	font-weight: bold;
+}
+.messenger {
+	font-size: 1.875em;	
+}
+.date {
+	font-size: 1.0em;	
+}

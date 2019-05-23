@@ -12,7 +12,9 @@
 <div *ngIf='receivingOrder != null'>
 <font size="6">
 	<div style="position: fixed;top:0; right:0;"> 
+		
 		Precio <span>{{orderPrice}}</span>
+		<input [(ngModel)]="receivingOrder.name" (change)="updateName(name.value)" #name size="10"/>
 		<div>
 		<button (click)="updateReceivingOrder(tabletId.value)" 
 		style="height:40px;width:200px"><font size="6">Confirmar</font></button>

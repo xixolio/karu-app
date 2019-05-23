@@ -69,6 +69,11 @@ export class SpecialIngredientsComponent implements OnInit {
 	  );    
   }
   
+  updateName(name: string): void {
+	  console.log(name);
+	  this.receivingOrder.name = name;
+  }
+  
   /** Se elimina el nuevo item de la lista provisoria **/
   removeItemFromReceivingOrder(item: Item): void{
 		  var removedItem = this.newItems.filter(i => i == item);
@@ -187,22 +192,22 @@ export class SpecialIngredientsComponent implements OnInit {
   /** Se modifica la orden en la BD intermedia **/
   updateReceivingOrder(tabletId: number): void {
 	  if(this.newItems.length != 0 && this.receivingOrder != null){
-	  for(var i = 0; i < this.newItems.length; i++){
-		  
-		  var found = false
-		  for(var j = 0; j < this.receivingOrder.items.length; j++){
-				if(this.newItems[i].ingredient == this.receivingOrder.items[j].ingredient){
-					console.log('asdasdas');
-					this.receivingOrder.items[j].amount += 1;
-					//this.newItems[j].itemPrice += selectedIngredients[i].price;
-					found = true
-					break;	
-				}					
-			}
-		  if(!found){
-			this.receivingOrder.items.push(this.newItems[i])	
+		  for(var i = 0; i < this.newItems.length; i++){
+			  
+			  var found = false
+			  for(var j = 0; j < this.receivingOrder.items.length; j++){
+					if(this.newItems[i].ingredient == this.receivingOrder.items[j].ingredient){
+						console.log('asdasdas');
+						this.receivingOrder.items[j].amount += 1;
+						//this.newItems[j].itemPrice += selectedIngredients[i].price;
+						found = true
+						break;	
+					}					
+				}
+			  if(!found){
+				this.receivingOrder.items.push(this.newItems[i])	
+			  }
 		  }
-	  }
 	  }
 	  this.receivingOrder.orderPrice = this.orderPrice;
 	  console.log(this.receivingOrder);
@@ -212,6 +217,7 @@ export class SpecialIngredientsComponent implements OnInit {
 			console.log(order);
 			this.getReceivingOrder(tabletId);
 			if( order != null ){
+				
 				this.newItems = [];
 				for(var i=0; i < this.ingredients.length; i++){
 					this.ingredients[i][1] = 0;
@@ -222,11 +228,12 @@ export class SpecialIngredientsComponent implements OnInit {
 	  
   }
   
+
   
   /** Se obtienen los ingredientes especiales a partir de la BD principal**/
   getSpecialIngredients(): void {
 	
-	this.ingredientsService.getIngredients("B")
+	this.ingredientsService.getIngredients("M")
       .subscribe(ingredients => {
 		  ingredients = ingredients.filter(i => i.scale == -1);
 		  
@@ -265,9 +272,6 @@ export class SpecialIngredientsComponent implements OnInit {
   **/
   ngOnInit() {
 	  this.getSpecialIngredients();
-	  this.orderService.currentMessage.subscribe(message => this.message = message);
-	  this.itemService.setUrlHistoryObj();
-		console.log(this.itemService.getUrlHistoryObj());
   }
 }
 /**

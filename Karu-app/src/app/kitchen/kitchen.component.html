@@ -1,4 +1,76 @@
-<p>
-  {{message}}
-   <button (click)="newMessage()">New Message</button>
-</p>
+<h2>Pedidos</h2>
+<ul class="kitchen">
+  <div *ngFor="let item of kitchenItems">
+	<!--<div *ngIf="ingredient[0].label == selected || selected=='Todo'" > -->
+	<li>
+		<font size="4">
+		<!--<span class="badge">{{ingredient[0].name}} </span> 
+		<span class="badge">{{ingredient[0].price}}</span> 
+		<span class="right">
+		<button (click)="addItem(ingredient)" style="height:50px;width:50px;">+</button>
+		<button (click)="substractItem(ingredient)" style="height:50px;width:50px;">-</button>
+		</span>
+		<span class="badge">{{ingredient[1]}}</span> 
+		-->
+		<span class="left2">{{item.item.ingredient}} </span>
+		<span class="left2">{{item.item.order}} </span>
+		<span class="left2">{{item.amount}} </span> 
+		<select name="selectLabel" [(ngModel)]="item.status" (change)="updateStatus(item,$event.target.value)" style="font-size:20px;height:40px;width:200px">>
+			<option *ngFor="let status of statusOptions"  [value]="status" style="font-size:20px;">
+			   {{status}} 
+			</option>
+		</select> 
+		<div *ngIf='item.status == "terminado"'>
+			<button (click)="deleteKitchenItem(item)">Eliminar</button>
+		</div>
+		</font>
+	</li>
+	<!-- </div> -->
+  </div>
+  
+</ul>
+
+<h2>Mensajes</h2>
+
+<div>
+  <p>
+  <label>Nuevo mensaje:
+  <div>
+    <!-- <input class='box' #message size="400"/> -->
+	<textarea id="subject" #message placeholder=".."></textarea>
+	</div>
+  </label>
+  </p>
+  <p>
+  <label>emisor:
+    <input #name size="5" />
+  </label>
+  </p>
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button (click)="sendMessage(message.value, name.value ); name.value=''; message.value='';">
+    Enviar
+  </button>
+</div>
+
+<ul class="message">
+  <div *ngFor="let message of messages">
+	<!--<div *ngIf="ingredient[0].label == selected || selected=='Todo'" > -->
+	<li>
+		<font size="4">
+		<!--<span class="badge">{{ingredient[0].name}} </span> 
+		<span class="badge">{{ingredient[0].price}}</span> 
+		<span class="right">
+		<button (click)="addItem(ingredient)" style="height:50px;width:50px;">+</button>
+		<button (click)="substractItem(ingredient)" style="height:50px;width:50px;">-</button>
+		</span>
+		<span class="badge">{{ingredient[1]}}</span> 
+		-->
+		<span class="sender">{{message.name}}: </span>
+		<span class="messenger">{{message.message}} </span>
+		<span class="left2">{{message.date}} </span> 
+		</font>
+	</li>
+	<!-- </div> -->
+  </div>
+  
+</ul>
