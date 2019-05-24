@@ -70,7 +70,7 @@ export class SpecialIngredientsComponent implements OnInit {
   }
   
   updateName(name: string): void {
-	  console.log(name);
+	  console.log(name=='');
 	  this.receivingOrder.name = name;
   }
   
