@@ -217,11 +217,15 @@ export class SpecialIngredientsComponent implements OnInit {
 			console.log(order);
 			console.log(order == undefined);
 			if( order != undefined ){
+				window.confirm("Compra guardada con éxito!")
 				this.getReceivingOrder(tabletId);
 				this.newItems = [];
 				for(var i=0; i < this.ingredients.length; i++){
 					this.ingredients[i][1] = 0;
 				}
+			}
+			else{
+				window.confirm("Ocurrió un problema, intente denuevo :(")
 			}
 		}
 	  );

@@ -25,6 +25,8 @@
   <li *ngFor="let order of orders">
     <div>RFID <span class="badge">{{order.rfID}}</span></div>
 	<div>Precio <span>{{order.orderPrice}}</span></div>
+	<div>Nombre <span>{{order.name}}</span></div>
+	<div>Tablet <span>{{order.receiving}}</span></div>
 	<ul>
 		<li *ngFor="let item of order.items">
 		<div>ingrediente <span class="badge">{{item.ingredient}}</span></div>
