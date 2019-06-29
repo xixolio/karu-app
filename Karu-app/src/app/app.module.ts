@@ -12,6 +12,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { SpecialIngredientsComponent } from './special-ingredients/special-ingredients.component';
 import { KitchenComponent } from './kitchen/kitchen.component';
 import { PlanBComponent } from './plan-b/plan-b.component';
+import {ItemService } from './item.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,6 @@ import { PlanBComponent } from './plan-b/plan-b.component';
 	AppRoutingModule,
     ReactiveFormsModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -3,10 +3,12 @@ import { FormBuilder, FormGroup, FormArray, FormControl, ValidatorFn } from '@an
 import {Ingredient } from '../ingredient';
 import { IngredientsService } from '../ingredients.service';
 import { OrderService } from '../order.service';
+import { PurchaseService } from '../purchase.service';
 import { ItemService } from '../item.service';
 import { Order } from '../order';
 import { Item } from '../item';
 import { Price } from '../price';
+import { Purchase } from '../purchase';
 @Component({
   selector: 'app-special-ingredients',
   templateUrl: './special-ingredients.component.html',
@@ -21,10 +23,13 @@ export class SpecialIngredientsComponent implements OnInit {
   
   receivingOrder: Order;
   
+  receivingPurchase: Purchase;
+  
   ingredientsLoaded: Promise<boolean>;
   
+  //ingredientsAmounts: number[]; 
   //ingredients: Ingredient[];
-  //ingredientsAmounts: number[];
+  
   ingredients: [Ingredient, any][] = [];
   
   newItems: Item[] = [];
@@ -40,7 +45,27 @@ export class SpecialIngredientsComponent implements OnInit {
   caja: boolean = false;
   
   /** Se obtiene la orden asociada a la rfid  y a la tablet **/
-  getReceivingOrder(tabletId: number): void {
+  createPurchase(): void {
+	  
+	  let orders: Order[];
+	  let purchase: Purchase = { orders: orders,
+								 purchasePrice : 0};
+	  this.purchaseService.addPurchase(purchase)
+		.subscribe( purchase => this.receivingPurchase = purchase );
+  }
+  createOrder(): void {
+	  let items: Item[];
+	  let order: Order = { items: orders,
+						   orderPrice: 0,
+						   name: 'defecto'};
+	  this.receivingPurchase.orders.push(order);
+	  this.purchaseService.updatePurchase(purchase)
+		.subscribe( purchase => this.receivingPurchase = purchase;
+								this.receivingOrder = purchase.orders[purchase.orders.length-1]);
+  }
+  
+  
+  /*getReceivingOrder(tabletId: number): void {
 	tabletId = +tabletId
 	console.log(typeof tabletId);
 	if(typeof tabletId != "number"){ return }
@@ -73,7 +98,7 @@ export class SpecialIngredientsComponent implements OnInit {
 	  console.log(name=='');
 	  this.receivingOrder.name = name;
   }
-  
+  */
   /** Se elimina el nuevo item de la lista provisoria **/
   removeItemFromReceivingOrder(item: Item): void{
 		  var removedItem = this.newItems.filter(i => i == item);
@@ -264,6 +289,7 @@ export class SpecialIngredientsComponent implements OnInit {
   }
   
   constructor(private ingredientsService: IngredientsService,
+    private purchaseService: PurchaseService,
 	private orderService: OrderService, private itemService: ItemService) { 
   }
   /**

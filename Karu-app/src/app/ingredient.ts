@@ -4,7 +4,6 @@ export class Ingredient {
   name: string;
   scale: number;
   label: string;
-  //paymentTypeId?: number;
 }
 
 export class IngredientShow {
