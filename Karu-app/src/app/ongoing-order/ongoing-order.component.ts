@@ -13,94 +13,64 @@ import { Purchase } from '../purchase';
 
 export class OngoingOrderComponent implements OnInit {
 
-  ongoingOrders: Order[] = [];
-  orders: Order[];
+  //ongoingOrders: Order[] = [];
+  purchases: Purchase[];
   purchasePrice: number = 0;
 
   // Falta agregar mensajes
   // 1) Si el get obtuvo un objeto, avisar
   // 2) Si el get no obtuvo nada, avisar también
   
-  getOrders(): void {
-	  this.orderService.getOrders("M")
-      .subscribe(orders => this.orders = orders);
+  getPurchases(): void {
+	  this.purchaseService.getPurchases()
+      .subscribe(purchases => this.purchases = purchases);
   }
   
-  getOngoingOrder(): void {
-	this.orderService.getOrders("M")
-      .subscribe(
-		orders => {
-		    /* ongoingOrder.orderPrice = 0;
-			for(var i = 0; i < ongoingOrder.items.length; i++){
-				ongoingOrder.orderPrice += ongoingOrder.items[i].itemPrice*ongoingOrder.items[i].amount;			
-			}
-			this.purchasePrice += ongoingOrder.orderPrice; */
-			for(var i = 0; i < orders.length; i++){
-				console.log(orders[i])
-				var found = false
-				if(orders[i].ongoing == true){
-					console.log(this.ongoingOrders.length)
-					for(var j = 0; j < this.ongoingOrders.length; j++){
-						if(this.ongoingOrders[j].id == orders[i].id){found = true; break}
-					}
-					if(found == false){
-						console.log('made it')
-						this.ongoingOrders.push(orders[i]);
-						this.updatePrices();
-					}
-					break					
-				}
-			}
-		}
-	  );    
-  }
+  // updatePrices(): void{
+	  
+	  // this.purchasePrice = 0;
+
+	  // for(var i = 0; i < this.ongoingOrders.length; i++){
+		  
+		  // this.ongoingOrders[i].orderPrice = 0;
+		  
+		  // for(var j = 0; j < this.ongoingOrders[i].items.length; j++){
+				// this.ongoingOrders[i].orderPrice += this.ongoingOrders[i].items[j].itemPrice*this.ongoingOrders[i].items[j].amount;			
+		  // }		
+
+		  // this.purchasePrice += this.ongoingOrders[i].orderPrice;
+	  // }
+	  
+  // }
   
-  updatePrices(): void{
+  // removeOrderItem(order,item): void {
 	  
-	  this.purchasePrice = 0;
-
-	  for(var i = 0; i < this.ongoingOrders.length; i++){
-		  
-		  this.ongoingOrders[i].orderPrice = 0;
-		  
-		  for(var j = 0; j < this.ongoingOrders[i].items.length; j++){
-				this.ongoingOrders[i].orderPrice += this.ongoingOrders[i].items[j].itemPrice*this.ongoingOrders[i].items[j].amount;			
-		  }		
-
-		  this.purchasePrice += this.ongoingOrders[i].orderPrice;
-	  }
+    // for(var i = 0; i < this.ongoingOrders.length; i++){
 	  
-  }
-  removeOrderItem(order,item): void {
-	  
-    for(var i = 0; i < this.ongoingOrders.length; i++){
-	  
-	  if(this.ongoingOrders[i] == order){
+	  // if(this.ongoingOrders[i] == order){
 		 
-		 this.ongoingOrders[i].orderPrice -= item.itemPrice*item.itemAmount;
-		 this.ongoingOrders[i].items = this.ongoingOrders[i].items.filter(object => object != item);
+		 // this.ongoingOrders[i].orderPrice -= item.itemPrice*item.itemAmount;
+		 // this.ongoingOrders[i].items = this.ongoingOrders[i].items.filter(object => object != item);
 		 
-		/* for(var j = 0; i < this.ongoingOrders[i].items.length; j++){
-				if(item == this.ongoingOrders[i].items[j]){
+		// /* for(var j = 0; i < this.ongoingOrders[i].items.length; j++){
+				// if(item == this.ongoingOrders[i].items[j]){
 					
-				}
-			}*/
-		 if (!this.ongoingOrders[i].items[0]){
-			 this.ongoingOrders = this.ongoingOrders.filter(object => object != this.ongoingOrders[i]);
-		 }
+				// }
+			// }*/
+		 // if (!this.ongoingOrders[i].items[0]){
+			 // this.ongoingOrders = this.ongoingOrders.filter(object => object != this.ongoingOrders[i]);
+		 // }
 		 
-		} 
-	}
+		// } 
+	// }
 	
-	this.updatePrices();
+	// this.updatePrices();
 	
-  }
-  cleanOngoingOrders(): void {
-	  this.ongoingOrders = [];
-	  this.purchasePrice = 0;
-  }
+  // }
+  
   
   // Falta Mensajito de que la compra fue agregada jeje
+  /*
   addPurchase(): void {
 	  
 	if( !this.ongoingOrders[0]) { return;} 
@@ -120,21 +90,17 @@ export class OngoingOrderComponent implements OnInit {
 		});
 	
   }  
-  
-  deleteOrder(order: Order): void{
-	  const id = order.id;
-	  this.orderService.deleteOrder(order)
-		.subscribe(order => {
-			if(order == null){
-				this.orders = this.orders.filter(o => o.id != id);
-			}
-		});
+  */
+  addPurchase(purchase: Purchase): void {
+	  this.purchaseService.addPurchase(purchase,'B')
+	  .subscribe(rpurchase => this.purchases = this.purchases.filter(p => p != purchase));
   }
   
-  constructor(private orderService: OrderService, private purchaseService: PurchaseService) { }
+
+  constructor(private purchaseService: PurchaseService) { }
 
   ngOnInit() {
-	  this.getOrders();
+	  this.getPurchases();
   }
 
 }

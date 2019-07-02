@@ -9,14 +9,15 @@
 	</form> 
 </div>
 -->
+
 <div *ngIf='receivingOrder != null'>
 <font size="6">
 	<div style="position: fixed;top:0; right:0;"> 
-		
+		Precio total <span>{{purchasePrice}}</span>
 		Precio <span>{{orderPrice}}</span>
 		<input [(ngModel)]="receivingOrder.name" (change)="updateName(name.value)" #name size="10"/>
 		<div>
-		<button (click)="updateReceivingOrder(tabletId.value)" 
+		<button (click)="updateReceivingOrder()" 
 		style="height:40px;width:200px"><font size="6">Confirmar</font></button>
 		</div>
 	</div>
@@ -30,16 +31,33 @@
 </select> 
 
 <div>
-<p>
-  <label> Tablet:
-	<input type='number' #tabletId size="1" value = 1>
-  </label>
-  </p>
   <!-- (click) passes input value to add() and then clears the input -->
-  <button (click)="getReceivingOrder(tabletId.value)">
-    Obtener compra en curso
+  <button (click)="createPurchase()">
+    Crear nueva compra
   </button>
 </div> 
+<div>
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button (click)="createOrder()">
+    Crear nuevo sandwich
+  </button>
+</div> 
+
+<div *ngIf='purchases != null'>
+<select name="selectPurchase" [(ngModel)]="receivingPurchase" (ngModelChange)="selectPurchase($event)" style="font-size:20px;height:40px;width:200px">>
+    <option *ngFor="let purchase of purchases" [ngValue]="purchase" style="font-size:20px;">
+       {{ purchase.id }} 
+    </option>
+</select> 
+</div>
+
+<div *ngIf='receivingPurchase != null'>
+<select name="selectOrder" [(ngModel)]="receivingOrder" (ngModelChange)="selectOrder($event)" style="font-size:20px;height:40px;width:200px">>
+    <option *ngFor="let order of receivingPurchase.orders" [ngValue]="order" style="font-size:20px;">
+       {{ order.name }} 
+    </option>
+</select> 
+</div>
 
 <h2>Ingredientes</h2>
 <ul class="ingredients">

@@ -41,11 +41,31 @@ export class PurchaseService {
 	  };
 	}
 	
-  /** Función que agrega la compra a la base de datos final **/
-  addPurchase(purchase: Purchase): Observable<Purchase> {
+  getPurchases(): Observable<Purchase[]> {
 	  
-	  return this.http.post<Purchase>(this.backendUrl, purchase, httpOptions).pipe(
+	  var url = this.middleUrl;  
+	  
+	  return this.http.get<Purchase[]>(url,httpOptions)
+	  	.pipe(
+	  		catchError(this.handleError('getPurchases', []))
+		);
+  }	
+  /** Función que agrega la compra a la base de datos final **/
+  addPurchase(purchase: Purchase, db: string): Observable<Purchase> {
+	  var url;
+	  if( db == 'B' ){url = this.backendUrl}
+	  if( db == 'M' ){url = this.middleUrl}
+	  
+	  return this.http.post<Purchase>(url, purchase, httpOptions).pipe(
 		catchError(this.handleError<Purchase>('addPurchase'))
+	  );
+  }
+  
+  updatePurchase(purchase: Purchase): Observable<Purchase> {
+	  
+	  const url_id = `${this.middleUrl}${purchase.id}/`;
+	  return this.http.put<Purchase>(url_id, purchase, httpOptions).pipe(
+		catchError(this.handleError<Purchase>('updatePurchase'))
 	  );
   }
   

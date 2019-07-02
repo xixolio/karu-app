@@ -1,42 +1,26 @@
-<h2>Compras actuales</h2>
-<div><h3>Total compra: {{purchasePrice}}</h3></div> 
-<div><button (click)="getOngoingOrder()">Obtener Orden</button></div>
-<div><button (click)="addPurchase()">Confirmar Orden</button></div>
-<div><button (click)="cleanOngoingOrders()">Limpiar</button></div>
-<ul class="ongoingOrders">
-  <li *ngFor="let order of ongoingOrders">
-    <div>RFID <span class="badge">{{order.cardId}}</span></div>
-	<div>Precio <span>{{order.orderPrice}}</span></div>
-	<ul>
-		<li *ngFor="let item of order.items">
-		<div>ingrediente <span class="badge">{{item.ingredient}}</span></div>
-		<div>precio <span class="badge">{{item.itemPrice}}</span></div>
-		<div>cantidad <span class="badge">{{item.amount}}</span></div>
-		<div>total <span class="badge">{{item.amount * item.itemPrice}}</span></div>
-		<div><button (click)="removeOrderItem(order,item)">Eliminar</button></div>
-		</li>
-	</ul>
-  </li>
-</ul>
 
-<h2>Sandwiches en curso</h2>
+<h2>Compras en curso</h2>
 
-<ul class="orders">
-  <li *ngFor="let order of orders">
-    <div>RFID <span class="badge">{{order.rfID}}</span></div>
-	<div>Precio <span>{{order.orderPrice}}</span></div>
-	<div>Nombre <span>{{order.name}}</span></div>
-	<div>Tablet <span>{{order.receiving}}</span></div>
+<ul class="purchases">
+	<li *ngFor="let purchase of purchases">
+	<div>Precio compra <span>{{purchase.totalPrice}}</span></div>
 	<ul>
-		<li *ngFor="let item of order.items">
-		<div>ingrediente <span class="badge">{{item.ingredient}}</span></div>
-		<div>precio <span class="badge">{{item.itemPrice}}</span></div>
-		<div>cantidad <span class="badge">{{item.amount}}</span></div>
-		<div>total <span class="badge">{{item.amount * item.itemPrice}}</span></div>
-		</li>
-	</ul>
-	<div><button (click)="deleteOrder(order)">Eliminar</button></div>
-  </li>
+	  <li *ngFor="let order of purchase.orders">
+		<div>Precio sandwich <span>{{order.orderPrice}}</span></div>
+		<div>Nombre <span>{{order.name}}</span></div>
+		<ul>
+			<li *ngFor="let item of order.items">
+			<div>ingrediente <span class="badge">{{item.ingredient}}</span></div>
+			<div>precio <span class="badge">{{item.itemPrice}}</span></div>
+			<div>cantidad <span class="badge">{{item.amount}}</span></div>
+			<div>total <span class="badge">{{item.amount * item.itemPrice}}</span></div>
+			</li>
+		</ul>
+		<!--<div><button (click)="deleteOrder(order)">Eliminar</button></div> -->
+	  </li>
+	 </ul>
+	 <div><button (click)="addPurchase(purchase)">Finalizar</button></div>
+	</li>
 </ul>
 
 

@@ -1,6 +1,7 @@
 import { Order } from './order';
 
 export class Purchase {
+  id?: number;
   orders: Order[];
-  purchasePrice: number;
+  totalPrice: number;
 }
