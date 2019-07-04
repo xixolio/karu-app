@@ -1,8 +1,16 @@
 
 <h2>Compras en curso</h2>
-
+<div style="position: fixed;top:0; right:0;"> 
+<select name="editar" [(ngModel)]="editar"  style="font-size:20px;height:40px;width:200px">>
+			<option *ngFor="let status of statusOptions"  [value]="status" style="font-size:20px;">
+			   {{status}} 
+			</option>
+</select> 
+<div><button (click)="finishDay()">Cerrar caja</button></div>
+</div>
 <ul class="purchases">
-	<li *ngFor="let purchase of purchases">
+	<li *ngFor="let purchase of purchases; let i=index">
+	<div><span>{{purchase.timestamp}}</span></div>
 	<div>Precio compra <span>{{purchase.totalPrice}}</span></div>
 	<ul>
 	  <li *ngFor="let order of purchase.orders">
@@ -14,11 +22,17 @@
 			<div>precio <span class="badge">{{item.itemPrice}}</span></div>
 			<div>cantidad <span class="badge">{{item.amount}}</span></div>
 			<div>total <span class="badge">{{item.amount * item.itemPrice}}</span></div>
+			<div *ngIf="editar == 1">
+			<div><button (click)="deleteItem(item,order,purchase)">Eliminar item</button></div> 
+			</div>
 			</li>
 		</ul>
-		<!--<div><button (click)="deleteOrder(order)">Eliminar</button></div> -->
+		<div *ngIf="editar == 1">
+		<div><button (click)="deleteOrder(order,purchase)">Eliminar sandwich</button></div> 
+		</div>
 	  </li>
 	 </ul>
+	 <div *ngIf="updates[i] == 1"><button (click)="updatePurchase(purchase)">Updatear</button>  </div> 
 	 <div><button (click)="addPurchase(purchase)">Finalizar</button></div>
 	</li>
 </ul>

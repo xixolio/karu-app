@@ -11,7 +11,7 @@ import { OngoingOrderComponent } from './ongoing-order/ongoing-order.component';
 import { MessagesComponent } from './messages/messages.component';
 import { SpecialIngredientsComponent } from './special-ingredients/special-ingredients.component';
 import { KitchenComponent } from './kitchen/kitchen.component';
-import { PlanBComponent } from './plan-b/plan-b.component';
+//import { PlanBComponent } from './plan-b/plan-b.component';
 import {ItemService } from './item.service';
 
 @NgModule({
@@ -24,7 +24,7 @@ import {ItemService } from './item.service';
     MessagesComponent,
     SpecialIngredientsComponent,
     KitchenComponent,
-    PlanBComponent
+    //PlanBComponent
   ],
   imports: [
     BrowserModule,

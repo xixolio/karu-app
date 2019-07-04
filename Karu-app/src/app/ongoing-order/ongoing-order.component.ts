@@ -3,6 +3,7 @@ import { OrderService } from '../order.service';
 import { PurchaseService } from '../purchase.service';
 import { Order } from '../order';
 import { Purchase } from '../purchase';
+import { Item } from '../item';
 
 
 @Component({
@@ -16,6 +17,9 @@ export class OngoingOrderComponent implements OnInit {
   //ongoingOrders: Order[] = [];
   purchases: Purchase[];
   purchasePrice: number = 0;
+  updates: number[]= [];
+  editar: number = 0;
+  statusOptions: number[] = [0,1];
 
   // Falta agregar mensajes
   // 1) Si el get obtuvo un objeto, avisar
@@ -23,7 +27,13 @@ export class OngoingOrderComponent implements OnInit {
   
   getPurchases(): void {
 	  this.purchaseService.getPurchases()
-      .subscribe(purchases => this.purchases = purchases);
+      .subscribe(purchases => {
+		  this.purchases = purchases;
+		  for(var i=0; i< this.purchases.length; i++){
+			  console.log('aca');
+			  this.updates.push(0);
+		  }
+	  });
   }
   
   // updatePrices(): void{
@@ -94,6 +104,47 @@ export class OngoingOrderComponent implements OnInit {
   addPurchase(purchase: Purchase): void {
 	  this.purchaseService.addPurchase(purchase,'B')
 	  .subscribe(rpurchase => this.purchases = this.purchases.filter(p => p != purchase));
+  }
+  
+  deleteItem(item: Item, order: Order, purchase: Purchase): void {
+	  var i = this.purchases.indexOf(purchase);
+	  var j = this.purchases[i].orders.indexOf(order);
+	  this.purchases[i].orders[j].items = this.purchases[i].orders[j].items.filter(it => it != item);
+	  const difference = item.itemPrice*item.amount;
+	  this.purchases[i].orders[j].orderPrice -= difference;
+	  this.purchases[i].totalPrice -= difference;
+	  this.updates[i] = 1;
+  }
+  
+  deleteOrder(order: Order, purchase: Purchase): void {
+	  var i = this.purchases.indexOf(purchase);
+	  this.purchases[i].orders = this.purchases[i].orders.filter(o => o != order);
+	  const difference = order.orderPrice;
+	  this.purchases[i].totalPrice -= difference;
+	  this.updates[i] = 1;
+  }
+  
+  updatePurchase(purchase: Purchase): void {
+	  var i = this.purchases.indexOf(purchase);
+	  this.purchaseService.updatePurchase(purchase)
+		.subscribe( upPurchase => {
+					this.purchases[i] = upPurchase;
+					this.updates[i] = 0;
+					});  
+  }
+  
+  finishDay(): void {
+	  const lastDate = this.purchases[this.purchases.length-1].timestamp.slice(0,10);
+	  var totalIncome = 0;
+	  for(var i=0; i < this.purchases.length; i++){
+		  //const day = this.purchases[i].timestamp.slice(0,10);
+		  if(this.purchases[i].timestamp.slice(0,10) == lastDate){
+			console.log(this.purchases[i].timestamp.slice(0,10));
+			totalIncome += this.purchases[i].totalPrice;
+		  }
+		  
+	  };
+	  window.confirm("Las karu-ganancias del día de hoy son: " +totalIncome as any as string+" karu-pesos");
   }
   
 
